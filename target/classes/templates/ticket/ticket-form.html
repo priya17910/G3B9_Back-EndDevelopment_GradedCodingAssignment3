@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- include summernote css/js -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<title>Create New Ticket</title>
+</head>
+<body>
+<div class="container-fluid d-flex bg-primary" style="justify-content: space-between;padding: 1vmax;">
+	<span style="padding-right: 1vmax; font-weight: bold; font-size: 1vmax;">Ticket Tracker Application</span>
+	<span style="padding-right: 1vmax;"><a href="/tickets/list" style="color: white;font-size: 0.75vmax;">Tickets</a></span>
+	<span><a href="/tickets/showTicketFormForAdd" style="color: white;font-size: 0.75vmax;">New Ticket</a></span>
+</div>
+<div class="container-fluid mt-5 pt-2">
+	<hr />
+	<div th:if="${add}">
+		<h3 style="text-align: center; font-weight: bold;">Create Ticket</h3>
+	</div>
+	<div th:if="${edit}">
+		<h3 style="text-align: center; font-weight: bold;">Edit Ticket</h3>
+	</div>
+	<div th:if="${view}">
+		<h3 style="text-align: center; font-weight: bold;">View Ticket</h3>
+	</div>
+	<hr />
+	<form th:action="@{/tickets/saveTicket}" th:object="${ticket}" method="post">
+		<div>
+			<!-- ADD HIDDEN FORM FIELD TO HANDLE UPDATE -->
+			<input type="hidden" th:field="*{id}" />
+		</div>
+		<div class="form-group">
+			<label for="title">Title</label>
+			<input type="text" th:attr="readonly=${readOnly}" class="form-control" placeholder="Enter Title" id="title" name="title" th:field="*{title}" required="required" />
+		</div>
+		<div class="form-group">
+			<label for="description">Short Description</label>
+			<textarea class="form-control" th:attr="readonly=${readOnly}" placeholder="Enter ticket description" id="description" rows="3" style="width: 100%;" name="description" th:field="*{description}" required="required"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="content">Content</label>
+			<textarea id="content" class="form-control" name="content" th:field="*{content}" required="required"></textarea>
+		</div>
+		<button type="submit" class="btn btn-primary" th:attr="disabled=${readOnly}">Submit</button>
+	</form>
+</div>
+<script>
+	$(document).ready(function() {
+		$('#content').summernote({
+			placeholder: "Enter Ticket",
+		});
+	});
+</script>
+</body>
+</html>

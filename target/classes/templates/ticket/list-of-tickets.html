@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css">
+<title>Ticket Directory</title>
+</head>
+<body>
+<div class="container-fluid d-flex bg-primary" style="justify-content: space-between;padding: 1vmax;">
+	<span style="padding-right: 1vmax; font-weight: bold; font-size: 1vmax;">Ticket Tracker Application</span>
+	<span style="padding-right: 1vmax;"><a href="/tickets/list" style="color: white;">Tickets</a></span>
+	<span><a href="/tickets/showTicketFormForAdd" style="color: white;">New Ticket</a></span>
+</div>
+<hr />
+<div class="container-fluid">
+	<h3 style="font-weight: bold;">
+		List Of Tickets
+	</h3>
+</div>
+<hr />
+<div class="container-fluid">
+	<form class="form-inline" th:action="@{/tickets/searchTickets}" method="post">
+		<input class="form-control mr-sm-2" type="text" placeholder="Search" name="keyword" id="keyword" th:value="${keyword}">
+		<button class="btn btn-success mr-sm-2" type="submit">Search</button>
+	</form>
+</div>
+<div class="container-fluid mt-5 pt-2 border">
+	<hr />
+	<div th:if="${param.ed}">
+		<div class="alert alert-info">
+			Edit or Save Successfully
+		</div>
+	</div>
+	<div th:if="${param.del}">
+		<div class="alert alert-danger">
+			Ticket Deleted Successfully
+		</div>
+	</div>
+	<table class="table table-striped text-center">
+		<thead>
+			<tr>
+				<th class="text-center">S. No</th>
+				<th class="text-center">Ticket Title</th>
+				<th class="text-center">Ticket Short Description</th>
+				<th class="text-center">Ticket Created On</th>
+				<th class="text-center">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="ticket, iState:${tickets}">
+				<td th:text="${iState.count}"></td>
+				<td th:text="${ticket.title}"></td>
+				<td th:text="${ticket.description}"></td>
+				<td th:text="${ticket.createdOn}"></td>
+				<td>
+					<a class="btn btn-primary 
+					mr-sm-2" th:href="@{/tickets/showTicketFormForEdit/{id}(id=${ticket.id})}">Edit</a>
+					<a class="btn btn-danger mr-sm-2" th:href="@{/tickets/delete/{id}(id=${ticket.id})}" onclick="if (!(confirm('Are you sure you want to delete this ticket?'))) return false">Delete</a>
+					<a class="btn btn-info mr-sm-2" th:href="@{/tickets/showTicketFormToView/{id}(id=${ticket.id})}">View</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
